@@ -4,6 +4,7 @@ app = Flask(__name__)
 
 todoData = []
 
+#created index
 @app.route('/')
 def index():
     return render_template('index.html', todos=todoData)
@@ -16,11 +17,13 @@ def create_todo():
     print(todoData)
     return redirect(url_for('index'))
 
+#created delete route
 @app.route('/delete/<todo_item>')
 def delete(todo_item):
     todoData.remove(todo_item)
     return redirect(url_for('index'))
 
+#created update route
 index_to_update= ''
 @app.route('/update/<todo_item>', methods=['POST', 'GET'])
 def update(todo_item):
