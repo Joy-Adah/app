@@ -1,8 +1,29 @@
+from enum import unique
 from flask import Flask, redirect, render_template, request, url_for
+from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 
-todoData = []
+# todoData = []
+#find the current app path(directory name)
+project_dir = os.path.dirname(os.path.abspath(__file__))
+
+#creating the database file in the above found path
+database_file = 'sqlite:///{}'.format(os.path.join(project_dir, 'todo.db'))
+
+#connecting the database file(todo.db) to the SQLAlchemy dependecies
+app.config["SQLALCHEMY_DATABASE_URI"] = database_file 
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
+
+class Todo(db.Model):
+    # id = db.Column(db.Integer, primary_key=True)
+    todo = db.Column(db.String(50), unique=True, nullable=False, primary_key=True)
+
+    def __repr__(self):
+        return f'Todo: {self.todo}'
 
 #created index
 @app.route('/')
